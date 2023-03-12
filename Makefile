@@ -1,3 +1,11 @@
+install: clean
+	pip install .
+
+install-dev: clean
+	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
+	pip install -e .
+
 coverage-all:
 		coverage erase
 		coverage run --source resolver -m unittest
