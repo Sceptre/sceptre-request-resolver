@@ -13,11 +13,10 @@ jobs:
             v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
 
       - run:
-          name: Install project
+          name: Install
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
+            pyenv virtualenv 3.9.4 venv
+            pyenv global venv
             make install-dev
 
       - save_cache:
@@ -48,9 +47,8 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
+            pyenv virtualenv 3.9.4 venv
+            pyenv global venv
             make install-dev
 
       - save_cache:
@@ -62,29 +60,23 @@ jobs:
       - run:
           name: Linting
           command: |
-            . venv/bin/activate
+            pyenv global venv
             make lint
 
       - run:
           name: Unit Test
           command: |
-            . venv/bin/activate
-            mkdir test-reports
-            make test
+            pyenv global venv
+            make test-all
 
       - run:
           name: Coverage
           command: |
-            . venv/bin/activate
+            pyenv global venv
             make coverage
 
       - store_test_results:
           path: test-reports
-          destination: test-reports
-
-      - store_test_results:
-          path: coverage.xml
-          destination: coverage-reports
 
       - store_artifacts:
           path: test-reports
@@ -108,9 +100,8 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
+            pyenv virtualenv 3.9.4 venv
+            pyenv global venv
             make install-dev
 
           paths:
@@ -128,13 +119,13 @@ jobs:
       - run:
           name: Create Distribution
           command: |
-            . venv/bin/activate
+            pyenv global venv
             make dist
 
       - run:
           name: Upload to PyPi
           command: |
-            . venv/bin/activate
+            pyenv global venv
             twine upload -r test-pypi dist/*
 
   deploy-production:
@@ -146,9 +137,8 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
+            pyenv virtualenv 3.9.4 venv
+            pyenv global venv
             make install-dev
 
           paths:
@@ -165,13 +155,13 @@ jobs:
       - run:
           name: Create Distribution
           command: |
-            . venv/bin/activate
+            pyenv global venv
             make dist
 
       - run:
           name: Upload to PyPi
           command: |
-            . venv/bin/activate
+            pyenv global venv
             twine upload -r pypi dist/*
 workflows:
   test:
