@@ -13,16 +13,16 @@ class TestRequestResolver:
     resolver = Request(argument=None)
 
     @pytest.mark.parametrize(
-        "arg, expected",
+        "arg",
         [
-            (None, InvalidResolverArgumentValueError),
-            ("", InvalidResolverArgumentValueError),
-            ("invalid", InvalidResolverArgumentValueError),
-            ("foo://acme.org/invalid", InvalidResolverArgumentValueError),
+            (None),
+            (""),
+            ("invalid"),
+            ("foo://acme.org/invalid"),
         ],
     )
-    def test_resolve_with_invalid_args(self, arg, expected):
-        with pytest.raises(expected):
+    def test_resolve_with_invalid_args(self, arg):
+        with pytest.raises(InvalidResolverArgumentValueError):
             self.resolver.argument = arg
             self.resolver.resolve()
 

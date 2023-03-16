@@ -27,7 +27,7 @@ pip install git+https://github.com/Sceptre/sceptre-request-resolver.git
 parameters|sceptre_user_data:
   <name>: !request <API ENDPOINT>
 ```
-__Note__: This request always returns a string.
+__Note__: This resolver always returns a string.
 
 
 ## Example
