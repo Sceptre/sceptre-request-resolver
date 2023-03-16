@@ -2,7 +2,11 @@
 
 import pytest
 
+from unittest.mock import MagicMock, patch
 from resolver.request import Request
+
+
+fake_response = '{"fake", "data"}'
 
 
 class TestRequestResolver:
@@ -17,17 +21,16 @@ class TestRequestResolver:
             ("foo://acme.org/invalid", ValueError),
         ],
     )
-    def test_resolving_with_invalid_args(self, arg, expected):
+    def test_resolve_with_invalid_args(self, arg, expected):
         with pytest.raises(ValueError):
             self.resolver.argument = arg
             self.resolver.resolve()
 
-    def test_resolving_with_valid_arg(self):
-        endpoint = "https://dog.ceo/api/breed/hound/list"
+    @patch(
+        "resolver.request.Request._make_request", MagicMock(return_value=fake_response)
+    )
+    def test_resolve_with_valid_arg(self):
+        endpoint = "https://fake-endpoint.org"
         self.resolver.argument = endpoint
         response = self.resolver.resolve()
-        assert (
-            response
-            == '{"message":["afghan","basset","blood","english","ibizan","plott","walker"],'
-            '"status":"success"}'
-        )
+        assert response == fake_response

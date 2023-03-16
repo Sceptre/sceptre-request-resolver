@@ -5,7 +5,7 @@ A Sceptre resolver to make requests from REST API endpoints.
 ## Motivation
 
 There are some pretty useful REST API endpoints on the internet.  The endpoints
-can return lots of different types of data, typically in json format.
+can return lots of different types of data, typically in JSON format.
 This simple resolver can retrieve that data and pass it to Sceptre parameters
 or scepter_user_data parameters.
 
@@ -38,9 +38,9 @@ parameters:
 __Note__: request returns a string.
 
 
-Request data and convert the response string to a json object:
+Request data and convert the response string to a JSON object:
 ```yaml
 sceptre_user_data:
-   hounds: !ToJsonString {response}
+   hounds: !from_json_string {response}
      response: !request 'https://dog.ceo/api/breed/hound/list'
 ```
