@@ -22,7 +22,6 @@ class Request(Resolver):
             content = response.text
             response.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            # raise Exception(content) from err
             raise err
         except requests.exceptions.RequestException as e:
             raise e
