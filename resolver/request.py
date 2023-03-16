@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from validator_collection import checkers
 
+from validator_collection import checkers
 from sceptre.resolvers import Resolver
+from sceptre.exceptions import SceptreException
+
+
+class InvalidResolverArgumentValueError(SceptreException):
+    """
+    Error raised if a resolver's argument value is invalid.
+    """
+
+    pass
 
 
 class Request(Resolver):
@@ -17,15 +26,9 @@ class Request(Resolver):
         :param url: The url endpoint reference
         """
         content = None
-        try:
-            response = requests.get(url)
-            content = response.text
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as err:
-            raise err
-        except requests.exceptions.RequestException as e:
-            raise e
-
+        response = requests.get(url)
+        content = response.text
+        response.raise_for_status()
         return content
 
     def resolve(self):
@@ -40,6 +43,6 @@ class Request(Resolver):
         if checkers.is_url(arg):
             response = self._make_request(arg)
         else:
-            raise ValueError(f"Invalid argument: {arg}")
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {arg}")
 
         return response

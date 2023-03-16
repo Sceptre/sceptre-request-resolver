@@ -27,6 +27,8 @@ pip install git+https://github.com/Sceptre/sceptre-request-resolver.git
 parameters|sceptre_user_data:
   <name>: !request <API ENDPOINT>
 ```
+__Note__: This request always returns a string.
+
 
 ## Example
 
@@ -34,13 +36,4 @@ Simple request:
 ```yaml
 parameters:
   wisdom: !request 'https://ron-swanson-quotes.herokuapp.com/v2/quotes'
-```
-__Note__: request returns a string.
-
-
-Request data and convert the response string to a JSON object:
-```yaml
-sceptre_user_data:
-   hounds: !from_json_string {response}
-     response: !request 'https://dog.ceo/api/breed/hound/list'
 ```

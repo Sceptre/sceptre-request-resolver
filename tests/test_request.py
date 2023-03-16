@@ -4,7 +4,7 @@ import pytest
 
 from unittest.mock import MagicMock, patch
 from resolver.request import Request
-
+from resolver.request import InvalidResolverArgumentValueError
 
 fake_response = '{"fake", "data"}'
 
@@ -15,14 +15,14 @@ class TestRequestResolver:
     @pytest.mark.parametrize(
         "arg, expected",
         [
-            (None, ValueError),
-            ("", ValueError),
-            ("invalid", ValueError),
-            ("foo://acme.org/invalid", ValueError),
+            (None, InvalidResolverArgumentValueError),
+            ("", InvalidResolverArgumentValueError),
+            ("invalid", InvalidResolverArgumentValueError),
+            ("foo://acme.org/invalid", InvalidResolverArgumentValueError),
         ],
     )
     def test_resolve_with_invalid_args(self, arg, expected):
-        with pytest.raises(ValueError):
+        with pytest.raises(expected):
             self.resolver.argument = arg
             self.resolver.resolve()
 
