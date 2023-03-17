@@ -34,3 +34,29 @@ class TestRequestResolver:
         self.resolver.argument = endpoint
         response = self.resolver.resolve()
         assert response == fake_response
+
+
+    def test_resolve_with_valid_arg_dict_url(self):
+        endpoint = "https://fake-endpoint.org"
+        self.resolver.argument = {
+            "url": endpoint
+        }
+        response = self.resolver.resolve()
+        assert response == fake_response
+
+    def test_resolve_with_valid_arg_dict_url_auth(self):
+        endpoint = "https://fake-endpoint.org"
+        auth_type = 'BASIC'
+        auth_user = 'joe'
+        auth_pass = 'password'
+
+        self.resolver.argument = {
+            "url": endpoint,
+            "auth": {
+                "type": auth_type,
+                "user": auth_user,
+                "pass": auth_pass
+            }
+        }
+        response = self.resolver.resolve()
+        assert response == fake_response

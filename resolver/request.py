@@ -20,13 +20,18 @@ class Request(Resolver):
     Resolve data from a REST API endpoint.
     """
 
-    def _make_request(self, url):
+    VALID_AUTHENTICATION_METHODS = ["BASIC"]
+
+    def _make_request(self, url, auth_type=None):
         """
         Make a request to a REST API endpoint
         :param url: The url endpoint reference
         """
         content = None
-        response = requests.get(url)
+        if auth_type:
+            response = requests.get(url, auth_type)
+        else:
+            response = requests.get(url)
         content = response.text
         response.raise_for_status()
         return content
@@ -39,10 +44,24 @@ class Request(Resolver):
         :rtype: str
         """
 
-        arg = self.argument
-        if checkers.is_url(arg):
-            response = self._make_request(arg)
+        args = self.argument
+        url = None
+        auth= None
+
+        if not isinstance(args, str):
+            url = args.get("url")
+            auth = args.get("auth")
+            if isinstance(args, dict):
+                auth_type = args["auth"]["auth_type"]
+                if not auth_type in self.VALID_AUTHENTICATION_METHODS:
+                    raise InvalidResolverArgumentValueError(f"Invalid request method: {auth_type}")
+
+                if auth_type == "BASIC":
+                    response = self._make_request(args, auth)
+
+        if checkers.is_url(args):
+            response = self._make_request(args, auth_type)
         else:
-            raise InvalidResolverArgumentValueError(f"Invalid argument: {arg}")
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {args}")
 
         return response
