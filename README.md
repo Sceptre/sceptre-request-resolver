@@ -1,14 +1,39 @@
-# README
+# sceptre-request-resolver
 
-Add your resolver readme here. Remember to include the following:
+A Sceptre resolver to make requests from REST API endpoints.
 
-- Tell people how to install it (e.g. pip install ...).
-- Be clear about the purpose of the resolver, its capabilities and limitations.
-- Tell people how to use it.
-- Give examples of the resolver in use.
+## Motivation
 
-Read our wiki to learn how to use this repo:
-https://github.com/Sceptre/project/wiki/Sceptre-Resolver-Template
+There are some pretty useful REST API endpoints on the internet.  The endpoints
+can return lots of different types of data, typically in JSON format.
+This simple resolver can retrieve that data and pass it to Sceptre parameters
+or scepter_user_data parameters.
 
-If you have any questions or encounter an issue
-[please open an issue](https://github.com/Sceptre/project/issues/new)
+## Installation
+
+To install directly from PyPI
+```shell
+pip install sceptre-request-resolver
+```
+
+To install from this git repo
+```shell
+pip install git+https://github.com/Sceptre/sceptre-request-resolver.git
+```
+
+## Usage/Examples
+
+```yaml
+parameters|sceptre_user_data:
+  <name>: !request <API ENDPOINT>
+```
+__Note__: This resolver always returns a string.
+
+
+## Example
+
+Simple request:
+```yaml
+parameters:
+  wisdom: !request 'https://ron-swanson-quotes.herokuapp.com/v2/quotes'
+```
