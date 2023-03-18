@@ -39,7 +39,11 @@ class Request(Resolver):
         :rtype: str
         """
 
-        url = self.argument.get("url") if isinstance(self.argument, dict) else self.argument
+        url = (
+            self.argument.get("url")
+            if isinstance(self.argument, dict)
+            else self.argument
+        )
 
         if checkers.is_url(url):
             response = self._make_request(url)
