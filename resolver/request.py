@@ -39,10 +39,15 @@ class Request(Resolver):
         :rtype: str
         """
 
-        arg = self.argument
-        if checkers.is_url(arg):
-            response = self._make_request(arg)
+        url = (
+            self.argument.get("url")
+            if isinstance(self.argument, dict)
+            else self.argument
+        )
+
+        if checkers.is_url(url):
+            response = self._make_request(url)
         else:
-            raise InvalidResolverArgumentValueError(f"Invalid argument: {arg}")
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
 
         return response
