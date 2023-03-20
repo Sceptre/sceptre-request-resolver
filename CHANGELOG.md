@@ -10,4 +10,3 @@ Categories: Added, Removed, Changed, Fixed, Nonfunctional, Deprecated
 ### Added
 
 - Initial resolver release
-
