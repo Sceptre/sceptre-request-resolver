@@ -5,6 +5,28 @@ import requests
 from validator_collection import checkers
 from sceptre.resolvers import Resolver
 from sceptre.exceptions import SceptreException
+from jsonschema import validate
+from requests.auth import HTTPBasicAuth
+
+
+schema = {
+    "type": "object",
+    "properties": {
+        "url": {"type": "string"},
+        "auth": {"type": "string"},
+        "auth_type": {"enum": ["basic"]},
+        "username": {"type": "string"},
+        "password": {"type": "string"},
+    },
+    "required": ["url"],
+    "dependentRequired": {"auth": ["auth_type"]},
+    "anyOf": [
+        {
+            "properties": {"auth_type": {"const": "basic"}},
+            "required": ["username", "password"],
+        }
+    ],
+}
 
 
 class InvalidResolverArgumentValueError(SceptreException):
@@ -20,20 +42,27 @@ class Request(Resolver):
     Resolve data from a REST API endpoint.
     """
 
-    VALID_AUTHENTICATION_METHODS = ["BASIC"]
+    VALID_AUTHENTICATION_METHODS = ["basic"]
 
-    def _make_request(self, url, auth_type=None):
+    def _make_request(self, args=None):
         """
         Make a request to a REST API endpoint
         :param url: The url endpoint reference
         """
         content = None
-        if auth_type:
-            response = requests.get(url, auth_type)
+        url = args.get("url")
+        if not checkers.is_url(url):
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
+
+        if args.get("auth_type") == "basic":
+            username = args.get("username")
+            password = args.get("password")
+            response = requests.get(url, auth=HTTPBasicAuth(username, password))
         else:
             response = requests.get(url)
-        content = response.text
+
         response.raise_for_status()
+        content = response.json()
         return content
 
     def resolve(self):
@@ -43,34 +72,9 @@ class Request(Resolver):
         :returns: Response from the request
         :rtype: str
         """
-        
-        args = self.argument
-        
-        if isinstance(args, str):
-            url = args
-            
-        if isinstance(args, dict):
-            if not "url" in args.keys:
-                raise InvalidResolverArgumentValueError(f"Missing required argument: url")
 
-            url = args.get("url")
-                
-            if "auth" in args.keys():
-                auth_type = args.get("auth_type")
-                if not auth_type in self.VALID_AUTHENTICATION_METHODS:
-                    raise InvalidResolverArgumentValueError(f"Invalid authentication method: {auth_type}")
-                
-                if auth_type == 'BASIC':
-                    if not "user" in args.keys and not "password" in args.keys:
-                        raise InvalidResolverArgumentValueError(f"{auth_type} authentication requires: user and password parameters")
-                        
-                    user = args.get("user")
-                    password = args.get("password")    
-                    
-        if not checkers.is_url(url):
-            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
-        
-        
-        response = self._make_request(url, auth_type=auth_type, user=user, password=password)
-        
+        args = self.argument
+        validate(instance=args, schema=schema)
+        response = self._make_request(args)
+
         return response
