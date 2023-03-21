@@ -9,7 +9,7 @@ from jsonschema import validate
 from requests.auth import HTTPBasicAuth
 
 
-schema = {
+args_schema = {
     "type": "object",
     "properties": {
         "url": {"type": "string"},
@@ -62,7 +62,7 @@ class Request(Resolver):
             response = requests.get(url)
 
         response.raise_for_status()
-        content = response.json()
+        content = response.text
         return content
 
     def resolve(self):
@@ -74,7 +74,7 @@ class Request(Resolver):
         """
 
         args = self.argument
-        validate(instance=args, schema=schema)
+        validate(instance=args, schema=args_schema)
         response = self._make_request(args)
 
         return response
