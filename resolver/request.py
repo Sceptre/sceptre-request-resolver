@@ -43,16 +43,34 @@ class Request(Resolver):
         :returns: Response from the request
         :rtype: str
         """
+        
+        args = self.argument
+        
+        if isinstance(args, str):
+            url = args
+            
+        if isinstance(args, dict):
+            if not "url" in args.keys:
+                raise InvalidResolverArgumentValueError(f"Missing required argument: url")
 
-        url = (
-            self.argument.get("url")
-            if isinstance(self.argument, dict)
-            else self.argument
-        )
-
-        if checkers.is_url(url):
-            response = self._make_request(url)
-        else:
+            url = args.get("url")
+                
+            if "auth" in args.keys():
+                auth_type = args.get("auth_type")
+                if not auth_type in self.VALID_AUTHENTICATION_METHODS:
+                    raise InvalidResolverArgumentValueError(f"Invalid authentication method: {auth_type}")
+                
+                if auth_type == 'BASIC':
+                    if not "user" in args.keys and not "password" in args.keys:
+                        raise InvalidResolverArgumentValueError(f"{auth_type} authentication requires: user and password parameters")
+                        
+                    user = args.get("user")
+                    password = args.get("password")    
+                    
+        if not checkers.is_url(url):
             raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
+        
+        
+        response = self._make_request(url, auth_type=auth_type, user=user, password=password)
         
         return response
