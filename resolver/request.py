@@ -44,24 +44,15 @@ class Request(Resolver):
         :rtype: str
         """
 
-        args = self.argument
-        url = None
-        auth= None
+        url = (
+            self.argument.get("url")
+            if isinstance(self.argument, dict)
+            else self.argument
+        )
 
-        if not isinstance(args, str):
-            url = args.get("url")
-            auth = args.get("auth")
-            if isinstance(args, dict):
-                auth_type = args["auth"]["auth_type"]
-                if not auth_type in self.VALID_AUTHENTICATION_METHODS:
-                    raise InvalidResolverArgumentValueError(f"Invalid request method: {auth_type}")
-
-                if auth_type == "BASIC":
-                    response = self._make_request(args, auth)
-
-        if checkers.is_url(args):
-            response = self._make_request(args, auth_type)
+        if checkers.is_url(url):
+            response = self._make_request(url)
         else:
-            raise InvalidResolverArgumentValueError(f"Invalid argument: {args}")
-
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
+        
         return response

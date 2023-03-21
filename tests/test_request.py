@@ -19,6 +19,8 @@ class TestRequestResolver:
             (""),
             ("invalid"),
             ("foo://acme.org/invalid"),
+            ({"url": None}),
+            ({"url": "invalid"}),
         ],
     )
     def test_resolve_with_invalid_args(self, arg):
@@ -26,12 +28,15 @@ class TestRequestResolver:
             self.resolver.argument = arg
             self.resolver.resolve()
 
+    @pytest.mark.parametrize(
+        "arg",
+        [("https://fake-endpoint.org"), ({"url": "https://fake-endpoint.org"})],
+    )
     @patch(
         "resolver.request.Request._make_request", MagicMock(return_value=fake_response)
     )
-    def test_resolve_with_valid_arg(self):
-        endpoint = "https://fake-endpoint.org"
-        self.resolver.argument = endpoint
+    def test_resolve_with_valid_args(self, arg):
+        self.resolver.argument = arg
         response = self.resolver.resolve()
         assert response == fake_response
 

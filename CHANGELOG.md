@@ -4,12 +4,9 @@ Categories: Added, Removed, Changed, Fixed, Nonfunctional, Deprecated
 
 ## Unreleased
 
-<!--- All unreleased items go here  -->
 
-<!--- Example CHANGELOG entry
+## 0.0.1 (2023.03.20)
 
 ### Added
 
-- Initial resolver code
-
--->
+- Initial resolver release
