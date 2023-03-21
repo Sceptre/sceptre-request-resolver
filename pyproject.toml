@@ -1,3 +1,36 @@
+[tool.poetry]
+name = "sceptre-request-resolver"
+version = "0.0.1"
+authors = ["Khai Do <zaro0508@gmail.com>"]
+description = "A Sceptre resolver to make requests from REST API endpoints"
+keywords = ["sceptre", "sceptre-resolver"]
+license = "Apache2"
+classifiers = [
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Environment :: Console",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+validator-collection = ">=1.5"
+sceptre = ">=3.2"
+
+[tool.poetry.dev-dependencies]
+coverage = "^7.2.2"
+flake8 = "^6.0.0"
+pre-commit = "^3.2.0"
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+setuptools = "^67.6.0"
+twine = "^4.0.2"
+wheel = "^0.40.0"
+tox = ">3.0,<4.0"
+
 [build-system]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "wheel"]

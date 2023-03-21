@@ -55,7 +55,7 @@ setup(
     },
     include_package_data=True,
     zip_safe=False,
-    keywords="sceptre, sceptre-resolver",
+    keywords=["sceptre, sceptre-resolver"],
     classifiers=[
         "Intended Audience :: Developers",
         "Natural Language :: English",
