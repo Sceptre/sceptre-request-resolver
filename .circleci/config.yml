@@ -15,8 +15,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            poetry cache clear --all pypi
-            poetry install
+            poetry install --extras "sceptre"
 
       - run:
           name: Build package
