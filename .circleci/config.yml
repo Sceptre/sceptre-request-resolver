@@ -41,6 +41,12 @@ jobs:
           key:
             v1-dependency-cache-{{ checksum "pyproject.toml" }}
 
+      - save_cache:
+          key:
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}
+          paths:
+            - '~/.cache/pypoetry'
+
       - run:
           name: Linting
           command: poetry run pre-commit run --all-files
@@ -67,12 +73,6 @@ jobs:
       - store_artifacts:
           path: coverage.xml
           destination: coverage-reports
-
-      - save_cache:
-          key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}
-          paths:
-            - '~/.cache/pypoetry'
 
       - persist_to_workspace:
           root: /home/circleci
