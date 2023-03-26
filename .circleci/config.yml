@@ -83,6 +83,7 @@ jobs:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
 
+    steps:
       - run:
           name: Initialise .pypirc
           command: |
