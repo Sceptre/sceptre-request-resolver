@@ -10,7 +10,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}
 
       - run:
           name: Build package
@@ -18,7 +18,7 @@ jobs:
 
       - save_cache:
           key:
-            v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}
           paths:
             - '~/.cache/pypoetry'
 
@@ -39,7 +39,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}
 
       - run:
           name: Linting
@@ -70,7 +70,7 @@ jobs:
 
       - save_cache:
           key:
-            v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}
           paths:
             - '~/.cache/pypoetry'
 
