@@ -961,7 +961,7 @@ sceptre = ["sceptre"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "29c3923a6df72b6767ee0359e172de223b54f176b604334e1de7e077eb905c90"
+content-hash = "a290eb24487ef3e5013e7c8233df0cd5fee5eed7fc1c8ba1f4c210adc77b181a"
 
 [metadata.files]
 attrs = []
