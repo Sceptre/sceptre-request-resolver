@@ -23,10 +23,10 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-validator-collection = "^1.5"
-requests = "^2.28"
+validator-collection = "^1.5.0"
+requests = "^2.28.0"
 
-sceptre = { version = "^3.2", optional = true }
+sceptre = { version = "^3.2.0", optional = true }
 
 [tool.poetry.extras]
 sceptre = ["sceptre"]
@@ -40,7 +40,7 @@ pytest-cov = "^4.0.0"
 setuptools = "^67.6.0"
 twine = "^4.0.2"
 wheel = "^0.40.0"
-tox = "^3.0"
+tox = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
