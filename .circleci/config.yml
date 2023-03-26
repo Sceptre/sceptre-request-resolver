@@ -10,11 +10,13 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "poetry.lock" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Install dependencies
-          command: poetry install
+          command: |
+            poetry cache clear --all pypi
+            poetry install
 
       - run:
           name: Build package
@@ -22,28 +24,20 @@ jobs:
 
       - save_cache:
           key:
-            v1-dependency-cache-{{ checksum "poetry.lock" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
           paths:
             - '~/.cache/pypoetry'
-
-      # - persist_to_workspace:
-      #     root: /home/circleci
-      #     paths:
-      #       - project
 
   lint-and-unit-test:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
 
     steps:
-      # - attach_workspace:
-      #     at: /home/circleci
-
       - checkout
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "poetry.lock" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Linting
@@ -72,11 +66,6 @@ jobs:
           path: coverage.xml
           destination: coverage-reports
 
-      # - persist_to_workspace:
-      #     root: /home/circleci
-      #     paths:
-      #       - project
-
   deploy-test:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
@@ -86,7 +75,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "poetry.lock" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Initialise .pypirc
@@ -104,10 +93,10 @@ jobs:
             poetry run twine check dist/*
 
       - run:
-          name: Upload to PyPi
+          name: Test upload to PyPi
           command: poetry run twine upload -r test-pypi dist/*
 
-  deploy-production:
+  deploy-prod:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
 
@@ -116,7 +105,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "poetry.lock" }}
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: init .pypirc
