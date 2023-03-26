@@ -10,7 +10,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+            v2-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Install dependencies
@@ -23,7 +23,7 @@ jobs:
 
       - save_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+            v2-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
           paths:
             - '~/.cache/pypoetry'
 
@@ -36,7 +36,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+            v2-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Linting
@@ -74,7 +74,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+            v2-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: Initialise .pypirc
@@ -104,7 +104,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+            v2-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
           name: init .pypirc
