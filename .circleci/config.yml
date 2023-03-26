@@ -10,7 +10,7 @@ jobs:
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}
+            v1-dependency-cache-{{ checksum "poetry.lock" }}
 
       - run:
           name: Install dependencies
@@ -22,34 +22,28 @@ jobs:
 
       - save_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}
+            v1-dependency-cache-{{ checksum "poetry.lock" }}
           paths:
             - '~/.cache/pypoetry'
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths:
-            - project
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths:
+      #       - project
 
   lint-and-unit-test:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
 
     steps:
-      - attach_workspace:
-          at: /home/circleci
+      # - attach_workspace:
+      #     at: /home/circleci
 
       - checkout
 
       - restore_cache:
           key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}
-
-      - save_cache:
-          key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}
-          paths:
-            - '~/.cache/pypoetry'
+            v1-dependency-cache-{{ checksum "poetry.lock" }}
 
       - run:
           name: Linting
@@ -78,16 +72,22 @@ jobs:
           path: coverage.xml
           destination: coverage-reports
 
-      - persist_to_workspace:
-          root: /home/circleci
-          paths:
-            - project
+      # - persist_to_workspace:
+      #     root: /home/circleci
+      #     paths:
+      #       - project
 
   deploy-test:
     docker:
       - image: sceptreorg/sceptre-circleci:2.0.0
 
     steps:
+      - checkout
+
+      - restore_cache:
+          key:
+            v1-dependency-cache-{{ checksum "poetry.lock" }}
+
       - run:
           name: Initialise .pypirc
           command: |
@@ -113,6 +113,10 @@ jobs:
 
     steps:
       - checkout
+
+      - restore_cache:
+          key:
+            v1-dependency-cache-{{ checksum "poetry.lock" }}
 
       - run:
           name: init .pypirc
