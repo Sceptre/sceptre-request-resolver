@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 # More information on setting values:
 # https://github.com/Sceptre/project/wiki/sceptre-resolver-template
@@ -24,12 +24,10 @@ RESOLVER_URL = "https://github.com/sceptre/{}".format(RESOLVER_NAME)
 with open("README.md") as readme_file:
     README = readme_file.read()
 
-install_requirements = [
-    "sceptre>=3.2",
-]
+install_requirements = ["sceptre>=3.2", "validator-collection>=1.5"]
 
 test_requirements = [
-    "pytest>=6.0",
+    "pytest>=6.2",
 ]
 
 setup_requirements = ["pytest-runner>=6.0"]
