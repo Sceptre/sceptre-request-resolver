@@ -45,10 +45,6 @@ jobs:
           path: test-reports
 
       - store_artifacts:
-          path: dist
-          destination: dist
-
-      - store_artifacts:
           path: htmlcov
           destination: coverage-reports
 
