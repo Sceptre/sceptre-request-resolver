@@ -13,7 +13,7 @@ jobs:
           command: poetry install
 
       - run:
-          name: pre-commit
+          name: Run pre-commit
           command: poetry run pre-commit run --all-files
 
       - run:
@@ -38,7 +38,7 @@ jobs:
             v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
 
       - run:
-          name: Unit Test
+          name: Unit Tests
           command: poetry run tox
 
       - store_test_results:
