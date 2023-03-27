@@ -144,3 +144,6 @@ tags
 # VS code
 .vscode/
 .devcontainer/
+
+# temporary files
+temp/
