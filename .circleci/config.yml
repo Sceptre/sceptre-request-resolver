@@ -8,9 +8,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+      - run:
+          name: Install dependencies
+          command: poetry install
 
       - run:
           name: pre-commit
