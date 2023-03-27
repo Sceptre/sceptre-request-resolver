@@ -41,23 +41,15 @@ jobs:
           name: Unit Test
           command: poetry run tox
 
-      - run:
-          name: Coverage
-          command: |
-            poetry run coverage erase
-            poetry run coverage run --source resolver -m pytest
-            poetry run coverage xml
-            poetry run coverage report --show-missing
-
       - store_test_results:
           path: test-reports
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: dist
+          destination: dist
 
       - store_artifacts:
-          path: coverage.xml
+          path: htmlcov
           destination: coverage-reports
 
   deploy-test:
