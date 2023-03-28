@@ -1,2 +1,0 @@
-validator-collection>=1.5
-sceptre>=3.2
