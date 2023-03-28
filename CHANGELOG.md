@@ -22,3 +22,7 @@ Categories: Added, Removed, Changed, Fixed, Nonfunctional, Deprecated
 ### Added
 
 - Change build tools to use poetry
+
+## 0.2.0 (2023.03.28)
+
+### Added
