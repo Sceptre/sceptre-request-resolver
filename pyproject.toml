@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sceptre-request-resolver"
-version = "0.0.2"
+version = "0.1.0"
 packages = [{ include = "resolver" }]
 readme = "README.md"
 homepage = "https://github.com/Sceptre/sceptre-request-resolver"

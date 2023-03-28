@@ -16,3 +16,9 @@ Categories: Added, Removed, Changed, Fixed, Nonfunctional, Deprecated
 ### Fixes
 
 - Add missing dependency to setup.py
+
+## 0.1.0 (2023.03.28)
+
+### Added
+
+- Change build tools to use poetry
