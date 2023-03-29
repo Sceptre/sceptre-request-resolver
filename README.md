@@ -40,7 +40,14 @@ __Note__: This resolver always returns a string.
 ## Example
 
 Simple request:
+
 ```yaml
 parameters:
   wisdom: !request 'https://ron-swanson-quotes.herokuapp.com/v2/quotes'
+```
+
+```yaml
+parameters:
+  wisdom: !request
+    url: https://ron-swanson-quotes.herokuapp.com/v2/quotes
 ```
