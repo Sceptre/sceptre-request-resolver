@@ -61,7 +61,9 @@ jobs:
 
       - run:
           name: Test upload to PyPi
-          command: poetry publish -r https://test.pypi.org/legacy/ -u $PYPI_TEST_USER -p $PYPI_TEST_PASSWORD
+          command: |
+            poetry config repositories.test-pypi "https://test.pypi.org/legacy/"
+            poetry publish --build -r test-pypi -u $PYPI_TEST_USER -p $PYPI_TEST_PASSWORD
 
   deploy-prod:
     docker:
@@ -76,7 +78,7 @@ jobs:
 
       - run:
           name: Upload to PyPi
-          command: poetry publish -u $PYPI_PROD_USER -p $PYPI_PROD_PASSWORD
+          command: poetry publish --build -u $PYPI_PROD_USER -p $PYPI_PROD_PASSWORD
 
 workflows:
   test:
