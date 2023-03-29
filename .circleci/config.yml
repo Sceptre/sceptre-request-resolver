@@ -12,6 +12,12 @@ jobs:
           name: Install dependencies
           command: poetry install --extras sceptre -v
 
+      - save_cache:
+          key:
+            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
+          paths:
+            - '~/.cache/pypoetry'
+
       - run:
           name: Run pre-commit
           command: poetry run pre-commit run --all-files
@@ -19,12 +25,6 @@ jobs:
       - run:
           name: Build package
           command: poetry build
-
-      - save_cache:
-          key:
-            v1-dependency-cache-{{ checksum "pyproject.toml" }}-{{ checksum "poetry.lock" }}
-          paths:
-            - '~/.cache/pypoetry'
 
   tests:
     docker:
