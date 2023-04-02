@@ -32,6 +32,9 @@ parameters|sceptre_user_data:
 parameters|sceptre_user_data:
   <name>: !request
     url: <API ENDPOINT>
+    auth: <basic>
+    user: <auth user name>
+    password: <auth password>
 ```
 
 __Note__: This resolver always returns a string.
@@ -46,8 +49,12 @@ parameters:
   wisdom: !request 'https://ron-swanson-quotes.herokuapp.com/v2/quotes'
 ```
 
+Request with basic authentication:
 ```yaml
 parameters:
   wisdom: !request
-    url: https://ron-swanson-quotes.herokuapp.com/v2/quotes
+    url: https://private.endpoint.com/
+    auth: basic
+    user: MyUsername
+    password: MyUserPwd
 ```

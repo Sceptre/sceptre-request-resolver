@@ -8,24 +8,19 @@ from sceptre.exceptions import SceptreException
 from jsonschema import validate
 from requests.auth import HTTPBasicAuth
 
+VALID_AUTH_TYPES = ["basic"]
 
-args_schema = {
+RESOLVER_ARGS_SCHEMA = {
     "type": "object",
     "properties": {
         "url": {"type": "string"},
-        "auth": {"type": "string"},
-        "auth_type": {"enum": ["basic"]},
-        "username": {"type": "string"},
+        "auth": {"enum": VALID_AUTH_TYPES},
+        "user": {"type": "string"},
         "password": {"type": "string"},
     },
     "required": ["url"],
-    "dependentRequired": {"auth": ["auth_type"]},
-    "anyOf": [
-        {
-            "properties": {"auth_type": {"const": "basic"}},
-            "required": ["username", "password"],
-        }
-    ],
+    "if": {"properties": {"auth": {"const": "basic"}}, "required": ["auth"]},
+    "then": {"required": ["user", "password"]},
 }
 
 
@@ -42,22 +37,15 @@ class Request(Resolver):
     Resolve data from a REST API endpoint.
     """
 
-    VALID_AUTHENTICATION_METHODS = ["basic"]
-
-    def _make_request(self, args=None):
+    def _make_request(self, url, auth=None):
         """
         Make a request to a REST API endpoint
         :param url: The url endpoint reference
         """
         content = None
-        url = args.get("url")
-        if not checkers.is_url(url):
-            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
 
-        if args.get("auth_type") == "basic":
-            username = args.get("username")
-            password = args.get("password")
-            response = requests.get(url, auth=HTTPBasicAuth(username, password))
+        if auth:
+            response = requests.get(url, auth=auth)
         else:
             response = requests.get(url)
 
@@ -74,7 +62,22 @@ class Request(Resolver):
         """
 
         args = self.argument
-        validate(instance=args, schema=args_schema)
-        response = self._make_request(args)
+        url = args
 
+        if isinstance(args, dict):
+            validate(instance=args, schema=RESOLVER_ARGS_SCHEMA)
+            url = args.get("url")
+
+        if not checkers.is_url(url):
+            raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
+
+        auth = None
+        if isinstance(args, dict) and "auth" in args:
+            auth_type = args.get("auth").lower()
+            if auth_type == "basic":
+                user = args.get("user")
+                password = args.get("password")
+                auth = HTTPBasicAuth(user, password)
+
+        response = self._make_request(url, auth=auth)
         return response
