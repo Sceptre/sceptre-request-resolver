@@ -32,13 +32,14 @@ parameters|sceptre_user_data:
 parameters|sceptre_user_data:
   <name>: !request
     url: <API ENDPOINT>
-    auth: <basic>
+    auth: <authentication type>
     user: <auth user name>
     password: <auth password>
 ```
 
-__Note__: This resolver always returns a string.
-
+__Note__:
+* This resolver always returns a string.
+* Supported authentication types: `basic`
 
 ## Example
 
@@ -56,5 +57,5 @@ parameters:
     url: https://private.endpoint.com/
     auth: basic
     user: MyUsername
-    password: MyUserPwd
+    password: !ssm /app/prod/MyUserPwd
 ```
