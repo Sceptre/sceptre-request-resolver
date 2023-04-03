@@ -57,5 +57,5 @@ parameters:
     url: https://private.endpoint.com/
     auth: basic
     user: MyUsername
-    password: !ssm /app/prod/MyUserPwd
+    password: MyUserPwd
 ```
