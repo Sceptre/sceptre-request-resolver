@@ -66,17 +66,17 @@ class Request(Resolver):
 
         if isinstance(args, dict):
             validate(instance=args, schema=RESOLVER_ARGS_SCHEMA)
-            url = args.get("url")
+            url = args["url"]
 
         if not checkers.is_url(url):
             raise InvalidResolverArgumentValueError(f"Invalid argument: {url}")
 
         auth = None
         if isinstance(args, dict) and "auth" in args:
-            auth_type = args.get("auth").lower()
+            auth_type = args["auth"].lower()
             if auth_type == "basic":
-                user = args.get("user")
-                password = args.get("password")
+                user = args["user"]
+                password = args["password"]
                 auth = HTTPBasicAuth(user, password)
 
         response = self._make_request(url, auth=auth)
