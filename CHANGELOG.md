@@ -17,3 +17,8 @@
 * Added contribution docs
 * Make poetry manage test dependencies instead of tox
 * Use poetry to publish to pypi instead of twine
+
+## 0.4.0 (2023.04.05)
+
+* Add ability to make request with basic authentication
+* Add support for python 3.11
