@@ -13,11 +13,11 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.33.0
+    rev: v1.34.0
     hooks:
       - id: yamllint
   - repo: https://github.com/awslabs/cfn-python-lint
-    rev: v0.84.0
+    rev: v0.85.1
     hooks:
       - id: cfn-python-lint
         args:
@@ -45,7 +45,6 @@ repos:
       - id: poetry-check
       - id: poetry-lock
         language_version: python3.10
-        args: ['--check']
   - repo: https://github.com/sirosen/check-jsonschema
     rev: 0.27.3
     hooks:
